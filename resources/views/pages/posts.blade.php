@@ -1,0 +1,1 @@
+@each('pages.singlecampaign', $items, 'single')

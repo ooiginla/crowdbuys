@@ -9,7 +9,7 @@
             @foreach($campaign->backers as $backer)
             <tr>
                 <td>{{ $backer->user->fullname() }}</td>
-                <td>{{ Helper::gc($backer->currency) }}{{ Helper::nf($backer->amount) }} </td>
+                <td>{{ Helper::nf($backer->amount) }} </td>
                 <td>{{ date("M j, Y H:i:s", strtotime($backer->created_at)) }}</td>
             </tr>
             @endforeach

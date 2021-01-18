@@ -6,9 +6,9 @@
                     <div class="footer-menu-item">
                         <h3>Our company</h3>
                         <ul>
-                            <li><a href="index.html#">What is Campaign</a></li>
-                            <li><a href="index.html#">How is works us</a></li>
-                            <li><a href="index.html#">Pricing</a></li>
+                            <li><a href="#">What is Campaign</a></li>
+                            <li><a href="#">How it works</a></li>
+                            <li><a href="#">Pricing</a></li>
                         </ul>
                     </div>
                 </div>
@@ -16,9 +16,9 @@
                     <div class="footer-menu-item">
                         <h3>Campaign</h3>
                         <ul>
-                            <li><a href="index.html#">Home</a></li>
-                            <li><a href="index.html#">About Us</a></li>
-                            <li><a href="index.html#">Trust &amp; Safety</a></li>
+                            <li><a href="{{ url('/') }}">Home</a></li>
+                            <li><a href="#">About Us</a></li>
+                            <li><a href="#">Trust &amp; Safety</a></li>
                         </ul>
                     </div>
                 </div>
@@ -26,9 +26,9 @@
                     <div class="footer-menu-item">
                         <h3>Explore</h3>
                         <ul>
-                            <li><a href="index.html#">Support</a></li>
-                            <li><a href="index.html#">Terms of Use</a></li>
-                            <li><a href="index.html#">Privacy Policy</a></li>
+                            <li><a href="#">Support</a></li>
+                            <li><a href="#">Terms of Use</a></li>
+                            <li><a href="#">Privacy Policy</a></li>
                         </ul>
                     </div>
                 </div>

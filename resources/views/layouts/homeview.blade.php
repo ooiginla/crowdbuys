@@ -24,7 +24,7 @@
 	
 </head>
 
-<body class="home home-top">
+<body class="campaign-detail" >
 	<div class="preloading">
 		<div class="preloader loading">
 		  <span class="slice"></span>

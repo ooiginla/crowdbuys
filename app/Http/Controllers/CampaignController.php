@@ -6,6 +6,9 @@ use App\Models\Campaign;
 use App\Models\Comment;
 use App\Models\Resource;
 use App\Models\Announcement;
+use App\Models\Payment;
+use App\Helpers\Helper;
+use App\Models\Backer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
@@ -108,6 +111,14 @@ class CampaignController extends Controller
 
     public function view(Request $request, $id) 
     {
+        // Requery from payment...
+        if( $request->has('reference') && !empty($request->input('reference')) )
+        {
+            $reference = $request->input('reference');
+
+            $this->verifyRef($reference);
+        }
+
         if(is_numeric($id)) {
             $campaign = Campaign::with('user','comments.user', 'backers.user','resources.user')->where('id', $id)->first();
         }else{
@@ -116,9 +127,10 @@ class CampaignController extends Controller
 
         if(empty($campaign)){ abort(404); }
 
+
         $announcements = Announcement::where('campaign_id', $campaign->id)->latest()->get();
         
-        return view('campaign', ['campaign' => $campaign,'announcements' => $announcements]);
+        return view('campaign', ['campaign' => $campaign,'announcements' => $announcements, 'cc'=> 1]);
     }
 
     public function postComments(Request $request)
@@ -230,5 +242,120 @@ class CampaignController extends Controller
         $request->session()->flash("susmsg", "Announcement successfully posted");
 
         return redirect()->route('campaign.view', $campaign_id);
+    }
+
+    public function generateRef(Request $request, Campaign $campaign)
+    {
+        // check if slot still exists
+        if($campaign->total_raised >= $campaign->goal_amount) {
+            return response()->json(["message" => "Campaign Full, try other campaigns"], 500 );
+        }
+
+        $qty = $request->input('qty');
+
+        if(empty($qty)) {
+            $qty = 1;
+        }
+
+        $payment = new Payment;
+        $payment->campaign_id = $campaign->id;
+        $payment->status = 1;
+        $payment->platform = "paystack";
+        $payment->user_id = auth()->id();
+        $payment->quantity = $qty;
+        $payment->currency = 1;
+        $payment->reference = $ref = date("Ymd-".time().auth()->user()->id);
+        $payment->amount = $qty * $campaign->unit_amount;
+        $payment->save();
+
+        return $ref;
+    }
+
+    public function verifyRef($reference)
+    {
+        // Create a stream
+        $opts = [
+            'http'=>[
+                'method'=>"GET",
+                'header'=>"Accept-language: en\r\n" .
+                        "Content-Type: Application/Json\r\n" .
+                        "Authorization: Bearer sk_test_5cff2ef19916197c975da232cff9d31f77545228\r\n"
+            ]
+        ];
+        
+        $context = stream_context_create($opts);
+
+        // Open the file using the HTTP headers set above
+        $content = file_get_contents('https://api.paystack.co/transaction/verify/'.$reference, false, $context);
+
+        $response = json_decode($content);
+
+        if(!empty($response))
+        {
+            $payment = Payment::where('reference', $reference)->first();
+
+            if($response->data->status == "success")
+            {
+                if($response->data->amount == ($payment->amount *100))
+                {
+                    $old_status = $payment->status;
+
+                    $payment->status = 2;
+                    $payment->message = "successful";
+                    $payment->gateway_response = $response->data->gateway_response;
+                    $payment->paid_at = $response->data->paid_at;
+                    $payment->currency = Helper::fetchPaystackCurrency($response->data->currency);
+                    $payment->save();
+
+                    if($old_status != 2){
+                        $this->processSuccessfulPayment($payment);
+                    }
+
+                }else{
+                    $payment->status = 3;
+                    $payment->message = "Partial Payment:".$response->data->amount . " instead of ".$payment->amount;
+                    $payment->gateway_response = $response->data->gateway_response;
+                    $payment->paid_at = $response->data->paid_at;
+                    $payment->currency = Helper::fetchPaystackCurrency($response->data->currency);
+                    $payment->save();
+                }
+            }else{
+                $payment->status = 3;
+                $payment->message = "Failed";
+                $payment->gateway_response = $response->data->gateway_response;
+                $payment->paid_at = $response->data->paid_at;
+                $payment->currency = \Helper::fetchPaystackCurrency($response->data->currency);
+                $payment->save();
+            }
+        }
+    }
+
+    public function processSuccessfulPayment($payment)
+    {
+        // Add to Backer
+
+        for($i=1; $i <= $payment->quantity; $i++)
+        {
+            $backer = new Backer;
+            $backer->user_id = $payment->user_id;
+            $backer->campaign_id = $payment->campaign_id;
+            $backer->payment_id = $payment->id;
+            $backer->amount = $payment->amount;
+            $backer->save();
+        }
+
+        // Update Campaign
+        $campaign = Campaign::find($payment->campaign_id);
+        
+        $campaign->increment('total_backers', $payment->quantity);
+        $campaign->increment('total_raised', ($campaign->unit_amount * $payment->quantity));
+
+        if($campaign->total_raised >= $campaign->goal_amount) {
+            // close offer
+            $campaign->status = "closed";
+            $campaign->save();
+        }
+
+        session()->flash("susmsg", "Payment successful, You have successfully joined this campaign");
     }
 }

@@ -33,4 +33,7 @@ class Campaign extends Model
         return $this->hasMany('App\Models\Announcement');
     }
     
+    public function left2go(){
+        return $this->people_target - $this->total_backers;
+    }
 }

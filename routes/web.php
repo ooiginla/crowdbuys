@@ -25,6 +25,8 @@ Route::post('/post/resources', 'App\Http\Controllers\CampaignController@postreso
 Route::post('/post/announcement', 'App\Http\Controllers\CampaignController@postannouncement')->name('post.announcement');
 Route::get('/download/resource/{id}', 'App\Http\Controllers\CampaignController@download')->middleware(['auth'])->name('download.resource');
 Route::get('/delete/resource/{id}', 'App\Http\Controllers\CampaignController@deleteResource')->middleware(['auth'])->name('delete.resource');
+Route::get('/generate/ref/{campaign}', 'App\Http\Controllers\CampaignController@generateRef')->middleware(['auth'])->name('generate.ref');
+Route::get('/verify/ref/{reference}', 'App\Http\Controllers\CampaignController@verifyRef')->middleware(['auth'])->name('verify.ref');
 
 
 Route::get('/tayo', function () {

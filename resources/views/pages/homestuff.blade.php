@@ -5,8 +5,8 @@
             <div class="sideshow-description wow fadeInUp" data-wow-delay=".1s">Take advantage of the bulk buying and get to enjoy wow discounts and low delivery costs.</div>
             
             <div class="button wow fadeInUp" data-wow-delay="0.1s">
-                <a href="index.html#" class="btn-secondary">View Campaigns</a>
-                <a href="index.html#" class="btn-primary">Join Now</a>
+                <a href="{{ route('campaigns') }}" class="btn-secondary">View Campaigns</a>
+                <a href="{{ route('register') }}" class="btn-primary">Join Now</a>
             </div>
         </div><!-- .sideshow-content -->
     </div>
@@ -40,7 +40,7 @@
                     </div>
                     
                     <p>Discover campaign interests just for you and get great paired to start enjoying wonderful discounts .</p>
-                    <a href="create_a_campaign.html" class="btn-primary">Start a Campaign</a>
+                    <a href="{{ route('campaign.new') }}" class="btn-primary">Start a Campaign</a>
                 </div>
             </div>
             <div class="col-lg-8">
@@ -76,7 +76,7 @@
                 <div class="item-work">
                     <div class="item-icon"><span>03</span><i class="fa fa-money" aria-hidden="true"></i></div>
                     <div class="item-content">
-                        <h3 class="item-title">Enjoy Benefit</h3>
+                        <h3 class="item-title">Enjoy Benefits Together</h3>
                         <div class="item-desc"><p>Once the number is complete, start enjoying your product or service at a discount.</p></div>
                     </div>
                 </div>

@@ -63,7 +63,8 @@ class Helper
         return $matches[0];
     }
 
-    public static function nf($amount){
+    public static function nf($amount)
+    {
         return number_format($amount,0,'.',',');
     }
 
@@ -134,6 +135,36 @@ class Helper
         }else{
             if(array_key_exists($id, $categories)){
                 return $categories[$id];
+            }else{
+                return "";
+            }
+        }
+    }
+
+    public static function fetchPaystackCurrency($currency=null) 
+    {
+        $categories = ['NGN' => 1, 'USD' =>  2];
+
+        if(empty($currency)){
+            return $categories;
+        }else{
+            if(array_key_exists($currency, $categories)){
+                return $categories[$currency];
+            }else{
+                return "";
+            }
+        }
+    }
+
+    public static function getCountries($country=null)
+    {
+        $countries = Country::pluck('name', 'id');
+
+        if(empty($countries)){
+            return $countries;
+        }else{
+            if(array_key_exists($country, $countries)){
+                return $countries[$country];
             }else{
                 return "";
             }

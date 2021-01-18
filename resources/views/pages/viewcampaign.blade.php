@@ -28,20 +28,29 @@
                         <div class="process-info">
                             <div class="process-pledged"><span>{{ Helper::gc($campaign->currency) }}{{ $campaign->total_raised }}</span>Raised </div>
                             <div class="process-funded"><span>{{ $campaign->people_target }}</span>From</div>
-                            <div class="process-time"><span>{{ $campaign->total_raised }}</span>Person(s) to go</div>
+                            <div class="process-time"><span>{{ $campaign->left2go() }}</span>Person(s) to go</div>
                         </div>
                     </div>
                     <div class="button">
-                        <form action="campaign_detail.html#" id="priceForm" class="campaign-price quantity">
-                            <button class="btn-primary" type="submit">Join Campaign</button>
+                    @if(auth()->user())
+                        <form id="paymentForm" class="campaign-price-quantity">
+                            <input type="hidden" id="email-address"  value="{{ auth()->user()->email }}" required />
+                            <input type="hidden" id="amount" required value="{{ $campaign->unit_amount }}" />
+                            <input type="hidden" id="first-name" value="{{ auth()->user()->firstname }}" />
+                            <input type="hidden" id="last-name" value="{{ auth()->user()->lastname }}" />
+                            <label><strong> Slots: </strong></label>
+                            <input type="number" id="quantity" name="quantity" min="1" max="{{ $campaign->left2go() }}" value="1" style="font-style: normal">
+                            <button type="submit" onclick="payWithPaystack(event)" class="btn-primary"> Join Campaign </button>
                         </form>
+                    @else
+                        <a href="{{ route('login') }}" class="btn-primary">Join Campaign</a>
+                    @endif
                         <div class="share" style="float: right; margin-top: -20px">
                         <p>Share this project</p>
                         <ul>
-                            <li class="share-facebook"><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
-                            <li class="share-twitter"><a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
-                            <li class="share-google-plus"><a href="#"><i class="fa fa-google-plus" aria-hidden="true"></i></a></li>
-                            <li class="share-linkedin"><a href="#"><i class="fa fa-linkedin" aria-hidden="true"></i></a></li>
+                            <li class="share-facebook"><a href="https://www.facebook.com/sharer/sharer.php?u={{ url()->current() }}"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+                            <li class="share-twitter"><a href="https://twitter.com/intent/tweet?text={{ url()->current() }}"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+                            <li class="share-linkedin"><a href="https://www.linkedin.com/shareArticle?mini=true&url={{ url()->current() }}&title={{ $campaign->title }}&summary={{ $campaign->description }}&source={{ url('/') }}"><i class="fa fa-linkedin" aria-hidden="true"></i></a></li>
                         </ul>
                     </div>
                     </div>
@@ -56,7 +65,7 @@
 <div class="campaign-history">
     <div class="container">
         <div class="row">
-            <div class="col-lg-8">
+            <div class="col-lg-12">
                 <div class="campaign-tabs">
                     <ul class="tabs-controls">
                         <li class="active" data-tab="comment"><a href="campaign_detail.html#">Comments</a></li>

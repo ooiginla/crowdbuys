@@ -1,3 +1,4 @@
+<!-- 
 <div class="col-lg-4">
     <div class="support support-campaign">
         <h3 class="support-campaign-title">Back this Campaign</h3>
@@ -21,3 +22,4 @@
         </div>
     </div>
 </div>
+-->

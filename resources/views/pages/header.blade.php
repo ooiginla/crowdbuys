@@ -37,10 +37,10 @@
                             <li>
                                 <a href="#" class="btn-primary text-white">Account<i class="fa fa-caret-down" aria-hidden="true"></i></a>
                                 <ul class="sub-menu">
-                                    <li><a href="dashboard.html">Dashboard</a></li>
-                                    <li><a href="profile.html">My Campaigns</a></li>
-                                    <li><a href="account_my_campaigns.html">My Clubs</a></li>
-                                    <li><a href="account_pledges_received.html">My Account</a></li>
+                                    <li><a href="{{ route('dashboard') }}">Dashboard</a></li>
+                                    <li><a href="{{ route('dashboard') }}#mycampaigns">My Campaigns</a></li>
+                                    <li><a href="{{ route('dashboard') }}#myclubs">My Clubs</a></li>
+                                    <li><a href="#">My Account</a></li>
                                     <li>
                                         <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                             {{ __('Logout') }}

@@ -37,7 +37,7 @@
         <div class="campaign-content">
             <div class="row" id="posts">
                 <div class="col-lg-12">
-                    <a href="#" class="btn-primary" style="position: absolute; right:15px;">Join</a>
+                    <a href="{{ route('campaign.view', $sponsored->slug) }}" class="btn-primary" style="position: absolute; right:15px;">Join</a>
                     <div class="campaign-big-item clearfix">
                         <a href="#" class="campaign-big-image"><img src="{{ asset('uploads/'.$sponsored->logo) }}" alt=""></a>
                         <div class="campaign-big-box">

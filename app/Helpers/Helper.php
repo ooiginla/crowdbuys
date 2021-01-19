@@ -71,8 +71,7 @@ class Helper
     public static function gc($id){
 
         $categories = [
-            1 => "£",
-            2 => "₦"
+            1 => "₦",
         ];
 
         if(empty($id)){

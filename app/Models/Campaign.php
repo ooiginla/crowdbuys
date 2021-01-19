@@ -36,4 +36,8 @@ class Campaign extends Model
     public function left2go(){
         return $this->people_target - $this->total_backers;
     }
+
+    public function isAdmin(){
+        return ($this->user_id == auth()->id());
+    }
 }

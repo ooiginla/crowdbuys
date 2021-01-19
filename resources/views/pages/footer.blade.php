@@ -6,9 +6,9 @@
                     <div class="footer-menu-item">
                         <h3>Our company</h3>
                         <ul>
-                            <li><a href="#">What is Campaign</a></li>
-                            <li><a href="#">How it works</a></li>
-                            <li><a href="#">Pricing</a></li>
+                            <li><a href="{{ route('whatiscampaign') }}">What is Campaign</a></li>
+                            <li><a href="{{ route('howitworks') }}">How it works</a></li>
+                            <li><a href="{{ route('pricing') }}">Pricing</a></li>
                         </ul>
                     </div>
                 </div>
@@ -17,8 +17,8 @@
                         <h3>Campaign</h3>
                         <ul>
                             <li><a href="{{ url('/') }}">Home</a></li>
-                            <li><a href="#">About Us</a></li>
-                            <li><a href="#">Trust &amp; Safety</a></li>
+                            <li><a href="{{ route('aboutus') }}">About Us</a></li>
+                            <li><a href="{{ route('trustsafety') }}">Trust &amp; Safety</a></li>
                         </ul>
                     </div>
                 </div>
@@ -26,9 +26,9 @@
                     <div class="footer-menu-item">
                         <h3>Explore</h3>
                         <ul>
-                            <li><a href="#">Support</a></li>
-                            <li><a href="#">Terms of Use</a></li>
-                            <li><a href="#">Privacy Policy</a></li>
+                            <li><a href="{{ route('support') }}">Support</a></li>
+                            <li><a href="{{ route('termsofuse') }}">Terms of Use</a></li>
+                            <li><a href="{{ route('privacypolicy') }}">Privacy Policy</a></li>
                         </ul>
                     </div>
                 </div>

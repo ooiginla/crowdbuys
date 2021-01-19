@@ -27,6 +27,17 @@ Route::get('/download/resource/{id}', 'App\Http\Controllers\CampaignController@d
 Route::get('/delete/resource/{id}', 'App\Http\Controllers\CampaignController@deleteResource')->middleware(['auth'])->name('delete.resource');
 Route::get('/generate/ref/{campaign}', 'App\Http\Controllers\CampaignController@generateRef')->middleware(['auth'])->name('generate.ref');
 Route::get('/verify/ref/{reference}', 'App\Http\Controllers\CampaignController@verifyRef')->middleware(['auth'])->name('verify.ref');
+Route::get('/dashboard', 'App\Http\Controllers\CampaignController@dashboard')->middleware(['auth'])->name('dashboard');
+
+Route::get('/about-us','App\Http\Controllers\ContentController@aboutus')->name('aboutus');
+Route::get('/contact-us','App\Http\Controllers\ContentController@contactus')->name('contactus');
+Route::get('/how-it-works','App\Http\Controllers\ContentController@howitworks')->name('howitworks');
+Route::get('/pricing','App\Http\Controllers\ContentController@pricing')->name('pricing');
+Route::get('/privacy-policy','App\Http\Controllers\ContentController@privacypolicy')->name('privacypolicy');
+Route::get('/support','App\Http\Controllers\ContentController@support')->name('support');
+Route::get('/terms-of-use','App\Http\Controllers\ContentController@support')->name('termsofuse');
+Route::get('/trust-and-safety','App\Http\Controllers\ContentController@trustsafety')->name('trustsafety');
+Route::get('/what-is-a-campaign','App\Http\Controllers\ContentController@whatiscampaign')->name('whatiscampaign');
 
 
 Route::get('/tayo', function () {
@@ -35,9 +46,6 @@ Route::get('/tayo', function () {
 
 
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
 
 
 

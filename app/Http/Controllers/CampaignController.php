@@ -358,4 +358,19 @@ class CampaignController extends Controller
 
         session()->flash("susmsg", "Payment successful, You have successfully joined this campaign");
     }
+
+    public function dashboard(Request $request)
+    {
+        // My campaigns
+        $mycampaigns = Campaign::withCount('backers')->where('user_id', auth()->id())->get();
+
+        // My Subscriptions
+        $backings = Backer::where('user_id', auth()->id())->pluck('campaign_id')->toArray();
+        $mylist = Campaign::where('user_id', auth()->id())->pluck('id')->toArray();
+        $subs = array_unique(array_diff($backings, $mylist));
+
+        $mysubscriptions = Campaign::withCount('backers')->whereIn('id', $subs)->get();
+
+        return view('dashboard',compact('mycampaigns','mysubscriptions'));
+    }
 }
